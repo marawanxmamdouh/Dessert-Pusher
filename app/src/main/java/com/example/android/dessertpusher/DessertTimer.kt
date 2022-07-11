@@ -1,6 +1,7 @@
 package com.example.android.dessertpusher
 
 import android.os.Handler
+import android.os.Looper
 import timber.log.Timber
 
 /**
@@ -21,13 +22,13 @@ import timber.log.Timber
 class DessertTimer {
 
     // The number of seconds counted since the timer started
-    var secondsCount = 0
+    private var secondsCount = 0
 
     /**
      * [Handler] is a class meant to process a queue of messages (known as [android.os.Message]s)
      * or actions (known as [Runnable]s)
      */
-    private var handler = Handler()
+    private var handler = Handler(Looper.getMainLooper())
     private lateinit var runnable: Runnable
 
 

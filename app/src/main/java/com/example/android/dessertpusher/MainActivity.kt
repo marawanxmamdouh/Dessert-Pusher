@@ -12,6 +12,10 @@ import androidx.lifecycle.LifecycleObserver
 import com.example.android.dessertpusher.databinding.ActivityMainBinding
 import timber.log.Timber
 
+private const val KEY_REVENUE = "revenue_key"
+private const val KEY_DESSERTSOLD = "dessertsSold_key"
+private const val KEY_DESSERTTIMER = "dessertTimer_key"
+
 class MainActivity : AppCompatActivity(), LifecycleObserver {
 
     private var revenue = 0
@@ -63,6 +67,13 @@ class MainActivity : AppCompatActivity(), LifecycleObserver {
         dessertTimer = DessertTimer()
         lifecycle.addObserver(dessertTimer)
 
+        //
+        if (savedInstanceState != null) {
+            revenue = savedInstanceState.getInt(KEY_REVENUE, 0)
+            dessertsSold = savedInstanceState.getInt(KEY_DESSERTSOLD, 0)
+            dessertTimer.secondsCount = savedInstanceState.getInt(KEY_DESSERTTIMER, 0)
+        }
+
         // Set the TextViews to the right values
         binding.revenue = revenue
         binding.amountSold = dessertsSold
@@ -100,6 +111,15 @@ class MainActivity : AppCompatActivity(), LifecycleObserver {
         super.onRestart()
         Timber.i("onRestart (line 96): onRestart called")
     }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putInt(KEY_REVENUE, revenue)
+        outState.putInt(KEY_DESSERTSOLD, dessertsSold)
+        outState.putInt(KEY_DESSERTTIMER, dessertTimer.secondsCount)
+        Timber.i("onSaveInstanceState (line 120): onSaveInstanceState called")
+    }
+
     /**
      * Updates the score when the dessert is clicked. Possibly shows a new dessert.
      */

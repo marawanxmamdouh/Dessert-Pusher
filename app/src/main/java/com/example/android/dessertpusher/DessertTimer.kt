@@ -2,6 +2,7 @@ package com.example.android.dessertpusher
 
 import android.os.Handler
 import android.os.Looper
+import androidx.lifecycle.*
 import timber.log.Timber
 
 /**
@@ -19,7 +20,7 @@ import timber.log.Timber
  * https://developer.android.com/guide/components/processes-and-threads
  *
  */
-class DessertTimer {
+class DessertTimer: DefaultLifecycleObserver {
 
     // The number of seconds counted since the timer started
     private var secondsCount = 0
@@ -54,5 +55,15 @@ class DessertTimer {
         // Removes all pending posts of runnable from the handler's queue, effectively stopping the
         // timer
         handler.removeCallbacks(runnable)
+    }
+
+    override fun onStart(owner: LifecycleOwner) {
+        super.onStart(owner)
+        startTimer()
+    }
+
+    override fun onStop(owner: LifecycleOwner) {
+        super.onStop(owner)
+        stopTimer()
     }
 }
